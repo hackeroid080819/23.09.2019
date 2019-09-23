@@ -29,7 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    private ArrayAdapter adapter;
+    private FlightsDataAdapter adapter;
     private ListView lv;
     private List<LandingData> listOfLandingData = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 android.R.drawable.btn_star));
 
         lv = findViewById(R.id.flightLV);
-        adapter = new ArrayAdapter<LandingData>(
+        adapter = new FlightsDataAdapter(
                 this, android.R.layout.simple_list_item_1, listOfLandingData );
         lv.setAdapter(adapter);
         bringDataFromFirebase();
@@ -62,16 +62,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void bringDataFromFirebase()
     {
-        mDatabase.getReference().child("landings").addListenerForSingleValueEvent(
+        mDatabase.getReference().child("landings").addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        //adapter.clear();
+                        //adapter.notifyDataSetChanged();
                         for (DataSnapshot child : dataSnapshot.getChildren())
                         {
                             LandingData ld = child.getValue(LandingData.class);
                             listOfLandingData.add(ld);
-                            adapter.add(ld);
                         }
+                        adapter.notifyDataSetChanged();
                     }
 
                     @Override

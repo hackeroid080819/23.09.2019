@@ -5,8 +5,12 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -16,15 +20,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    ArrayAdapter adapter;
-    ListView lv;
-
+    private ArrayAdapter adapter;
+    private ListView lv;
+    private List<LandingData> listOfLandingData = new ArrayList<>();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_1, new ArrayList<String>() );
         lv.setAdapter(adapter);
+
+        bringDataFromFirebase();
+    }
+
+    private void bringDataFromFirebase()
+    {
+
     }
 
     @Override

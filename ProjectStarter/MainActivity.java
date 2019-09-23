@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter adapter;
     private ListView lv;
     private List<LandingData> listOfLandingData = new ArrayList<>();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,16 +54,36 @@ public class MainActivity extends AppCompatActivity {
                 android.R.drawable.btn_star));
 
         lv = findViewById(R.id.flightLV);
-        adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, new ArrayList<String>() );
+        adapter = new ArrayAdapter<LandingData>(
+                this, android.R.layout.simple_list_item_1, listOfLandingData );
         lv.setAdapter(adapter);
-
         bringDataFromFirebase();
     }
 
     private void bringDataFromFirebase()
     {
+        mDatabase.getReference().child("landings").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child : dataSnapshot.getChildren())
+                        {
+                            LandingData ld = child.getValue(LandingData.class);
+                            for (int i = 0; i < 20; i++) {
+                                listOfLandingData.add(ld);
+                                adapter.add(ld);
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getBaseContext(), "Firebase error " + databaseError,
+                                Toast.LENGTH_SHORT).show();
+                        Log.e("=========== ", "Firebase error " + databaseError);
+                    }
+                }
+        );
     }
 
     @Override

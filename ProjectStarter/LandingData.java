@@ -1,6 +1,8 @@
 package com.example.itaykan.flightcenter;
 
-public class LandingData {
+import java.io.Serializable;
+
+public class LandingData implements Serializable {
 
     public String airport;
     public String apptime;

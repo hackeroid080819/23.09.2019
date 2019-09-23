@@ -69,10 +69,8 @@ public class MainActivity extends AppCompatActivity {
                         for (DataSnapshot child : dataSnapshot.getChildren())
                         {
                             LandingData ld = child.getValue(LandingData.class);
-                            for (int i = 0; i < 20; i++) {
-                                listOfLandingData.add(ld);
-                                adapter.add(ld);
-                            }
+                            listOfLandingData.add(ld);
+                            adapter.add(ld);
                         }
                     }
 

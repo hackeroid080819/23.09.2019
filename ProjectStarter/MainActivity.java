@@ -66,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        //adapter.clear();
-                        //adapter.notifyDataSetChanged();
+                        listOfLandingData.clear();
                         for (DataSnapshot child : dataSnapshot.getChildren())
                         {
                             LandingData ld = child.getValue(LandingData.class);
